@@ -7,7 +7,7 @@ import NotFound from "../components/NotFound";
 import Products from "../views/Products";
 // import Login from "../views/Auth/Login";
 // import Register from "../views/Auth/Register";
-import Dashboard from "../views/dashboard";
+import Dashboard from "../views/Dashboard";
 import Tables from "../views/Tables";
 import Login from "../views/Pages/Login";
 // import Register from "../views/Pages/Register";
