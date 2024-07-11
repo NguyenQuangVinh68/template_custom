@@ -1,16 +1,12 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import LayoutAuthen from "../layouts/LayoutAuthen";
 import DefaultLayout from "../layouts/DefaultLayout";
 
 import NotFound from "../components/NotFound";
 import Products from "../views/Products";
-// import Login from "../views/Auth/Login";
-// import Register from "../views/Auth/Register";
 import Dashboard from "../views/Dashboard";
 import Tables from "../views/Tables";
 import Login from "../views/Pages/Login";
-// import Register from "../views/Pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -23,15 +19,6 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <Dashboard /> },
     ],
   },
-
-  // {
-  //   path: "",
-  //   element: <LayoutAuthen />,
-  //   children: [
-  //     { path: "login", element: <Login /> },
-  //     { path: "register", element: <Register /> },
-  //   ],
-  // },
 
   {
     path: "/login",

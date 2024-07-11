@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-const cookie = new Cookies()
+const cookie = new Cookies();
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -12,8 +12,8 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   function (config) {
-    const token = cookie.get("jwt_authentication")
-    config.headers.Authorization = `Bearer ${token}`;
+    // const token = cookie.get("jwt_authentication");
+    // config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   function (error) {
@@ -23,9 +23,9 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   function (response) {
-    return response
+    return response;
   },
-  
+
   function (error) {
     // const { config, data, status } = error.response;
     // if (status === 400) {

@@ -1,103 +1,72 @@
-import React from "react";
-import { CCard, CCardBody, CCardHeader, CCol, CRow } from "@coreui/react";
+import { useEffect, useState } from "react";
+
+import ProductDtlComponent from "../../components/ProductDtlComponent";
+import Loading from "../../components/Loading";
+import apiProduct from "../../api/apiProduct";
+import PopupComponent from "../../components/PopupComponent";
+import { useContext } from "react";
+import { store } from "../../context/ContextProvider";
 
 const Products = () => {
-  return (
-    <CRow>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Click the accordions below to expand/collapse the accordion
-              content.
-            </p>
-          </CCardBody>
-        </CCard>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong> <small>Flush</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Add <code>flush</code> to remove the default{" "}
-              <code>background-color</code>, some borders, and some rounded
-              corners to render accordions edge-to-edge with their parent
-              container.
-            </p>
-          </CCardBody>
-        </CCard>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong> <small>Always open</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Add <code>alwaysOpen</code> property to make accordion items stay
-              open when another item is opened.
-            </p>
-          </CCardBody>
-        </CCard>
+  const [load, setLoad] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState({});
+  const { state, dispatch } = useContext(store);
 
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong> <small>Always open</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Add <code>alwaysOpen</code> property to make accordion items stay
-              open when another item is opened.
-            </p>
-          </CCardBody>
-        </CCard>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong> <small>Always open</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Add <code>alwaysOpen</code> property to make accordion items stay
-              open when another item is opened.
-            </p>
-          </CCardBody>
-        </CCard>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong> <small>Always open</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Add <code>alwaysOpen</code> property to make accordion items stay
-              open when another item is opened.
-            </p>
-          </CCardBody>
-        </CCard>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong> <small>Always open</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Add <code>alwaysOpen</code> property to make accordion items stay
-              open when another item is opened.
-            </p>
-          </CCardBody>
-        </CCard>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Accordion</strong> <small>Always open</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-body-secondary small">
-              Add <code>alwaysOpen</code> property to make accordion items stay
-              open when another item is opened.
-            </p>
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
+  const [isOpenModal, setOpenModal] = useState(false);
+
+  const getProduct = async () => {
+    try {
+      const { data } = await apiProduct.getAll();
+      dispatch({ type: "set_data", data: data });
+      setLoad(false);
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = (productId) => {
+    products.map((item) => {
+      if (item.id === productId) {
+        setOpenModal(true);
+        setProduct(item);
+      }
+    });
+  };
+
+  const handleDelete = (productId) => {
+    products.map((item) => {
+      if (item.id === productId) {
+        console.log(`delete ${productId}`);
+      }
+    });
+  };
+
+  // get all product
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  return (
+    <>
+      {load ? (
+        <Loading />
+      ) : (
+        <ProductDtlComponent
+          products={products}
+          onChange={handleChange}
+          onDelete={handleDelete}
+        />
+      )}
+      {isOpenModal && (
+        <PopupComponent
+          visible={isOpenModal}
+          setVisible={setOpenModal}
+          data={product}
+        ></PopupComponent>
+      )}
+    </>
   );
 };
 

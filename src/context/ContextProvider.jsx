@@ -1,30 +1,41 @@
 import React, { createContext, useReducer } from "react";
 const initialState = {
-  reloadProduct: false
+  idInData: null,
+  loading: false,
+  data: [],
 };
 
 const store = createContext(initialState);
 const { Provider } = store;
 
-const SET_RELOAD_PRODUCT = "set_reload_product"
-const SET_OPEN_TAB = "set_open_tab_sidebar"
-
+const SET_DATA = "set_data";
+const CHANGE_DATA = "change_data";
+const DEL_DATA = "del_data";
 
 const reducer = (state, action) => {
-  switch (action) {
-    case SET_RELOAD_PRODUCT:
-      console.log(state, "state reload");
-      return !state
-    case SET_OPEN_TAB:
-      console.log(state, "state set");
-      return { ...state, ...rest }
+  switch (action.type) {
+    case SET_DATA:
+      return {
+        ...state,
+        data: action.data,
+      };
+    case CHANGE_DATA:
+      return state.map((item) => {
+        if (item.id === action.data.id) {
+          return action.task;
+        } else {
+          return item;
+        }
+      });
+    case DEL_DATA:
+      return state.filter((item) => item.id !== action.idInData);
     default:
-      throw new Error("Invalid action")
+      throw new Error("Invalid action");
   }
-}
+};
 
 const StateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState);
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 export { store, StateProvider };
