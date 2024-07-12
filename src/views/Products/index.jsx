@@ -28,13 +28,36 @@ const Products = () => {
     }
   };
 
-  const handleChange = (productId) => {
+  const handleOpenChange = (productId) => {
     products.map((item) => {
       if (item.id === productId) {
         setOpenModal(true);
         setProduct(item);
       }
     });
+  };
+  const handleChange = (newData) => {
+    let flag = false;
+    const id = newData.id;
+    setProduct(
+      products.map((item) => {
+        if (item.id == id) {
+          flag = true;
+          return newData;
+        } else {
+          return item;
+        }
+      })
+    );
+    if (flag == true) {
+      swal({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   const handleDelete = (productId) => {
@@ -86,7 +109,7 @@ const Products = () => {
       ) : (
         <ProductDtlComponent
           products={products}
-          onChange={handleChange}
+          openChange={handleOpenChange}
           onDelete={handleDelete}
         />
       )}
@@ -95,6 +118,7 @@ const Products = () => {
           visible={isOpenModal}
           setVisible={setOpenModal}
           data={product}
+          onsubmit={handleChange}
         ></PopupComponent>
       )}
     </>
