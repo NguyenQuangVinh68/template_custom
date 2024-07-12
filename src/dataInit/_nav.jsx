@@ -50,30 +50,30 @@ const _nav = [
   {
     component: CNavGroup,
     name: "Droplist",
-    to: "/base",
+    to: "/listmain",
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
       {
         component: CNavGroup,
         name: "Chirld Droplist",
-        to: "/base/accordion",
+        to: "/listmain",
         items: [
           {
             component: CNavItem,
             name: "item chirld 1",
-            to: "/base/accordion1",
+            to: "/listmain/1",
           },
           {
             component: CNavItem,
             name: "item chirld 2",
-            to: "/base/accordion12",
+            to: "/listmain/4",
           },
         ],
       },
       {
         component: CNavItem,
         name: "Item 1",
-        to: "/base/breadcrumbs",
+        to: "/listmain/2",
       },
     ],
   },

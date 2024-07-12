@@ -14,7 +14,7 @@ import {
 // import { useContext } from "react";
 // import { store } from "../context/ContextProvider";
 
-function ProductDtlComponent({ products, onChange, onDelete }) {
+function ShowDetailComponent({ products, openChange, onDelete }) {
   //   const { state, dispatch } = useContext(store);
 
   if (products.length === 0) return <p>No data available</p>;
@@ -33,6 +33,7 @@ function ProductDtlComponent({ products, onChange, onDelete }) {
                     headers.map((header, index) => {
                       return (
                         header !== "image" &&
+                        header !== "products" &&
                         header !== "rating" && (
                           <CTableHeaderCell
                             key={index}
@@ -54,6 +55,7 @@ function ProductDtlComponent({ products, onChange, onDelete }) {
                         {headers.map((iheader, index) => {
                           return (
                             iheader !== "image" &&
+                            iheader !== "products" &&
                             iheader !== "rating" && (
                               <CTableDataCell key={index}>
                                 {item[iheader]}
@@ -64,7 +66,7 @@ function ProductDtlComponent({ products, onChange, onDelete }) {
                         <CTableDataCell>
                           <button
                             className="btn btn-warning"
-                            onClick={() => onChange(item.id)}
+                            onClick={() => openChange(item.id)}
                           >
                             edit
                           </button>
@@ -87,4 +89,4 @@ function ProductDtlComponent({ products, onChange, onDelete }) {
   );
 }
 
-export default ProductDtlComponent;
+export default ShowDetailComponent;

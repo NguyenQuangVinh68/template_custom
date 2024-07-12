@@ -1,40 +1,66 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import swal from "sweetalert";
 
-import ProductDtlComponent from "../../components/ShowDetailComponent";
+import ShowDetailComponent from "../../components/ShowDetailComponent";
 import Loading from "../../components/Loading";
-import apiProduct from "../../api/apiProduct";
+import apiListMain from "../../api/apiListMain";
 import PopupComponent from "../../components/PopupChangeComponent";
 import { useContext } from "react";
 import { store } from "../../context/ContextProvider";
 
-const Products = () => {
+function ListMain() {
   const [load, setLoad] = useState(true);
-  const [products, setProducts] = useState([]);
+  const [data, setData] = useState([]);
   const [product, setProduct] = useState({});
   // const { state, dispatch } = useContext(store);
 
   const [isOpenModal, setOpenModal] = useState(false);
 
+  const { id } = useParams();
   const getProduct = async () => {
     try {
       console.log("getdata");
-      const { data } = await apiProduct.getAll();
+      const { data } = await apiListMain.getAll(id);
       // dispatch({ type: "set_data", data: data });
       setLoad(false);
-      setProducts(data);
+      setData(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleChange = (productId) => {
-    products.map((item) => {
+  const handleOpenChange = (productId) => {
+    data.map((item) => {
       if (item.id === productId) {
         setOpenModal(true);
         setProduct(item);
       }
     });
+  };
+  const handleChange = (newData) => {
+    let flag = false;
+    console.log(newData);
+    const id = newData.id;
+    setData(
+      data.map((item) => {
+        if (item.id == id) {
+          flag = true;
+          return newData;
+        } else {
+          return item;
+        }
+      })
+    );
+    if (flag == true) {
+      swal({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   const handleDelete = (productId) => {
@@ -48,9 +74,9 @@ const Products = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((willDelete) => {
       if (willDelete) {
-        products.map((item) => {
+        data.map(async (item) => {
           if (item.id === productId) {
-            apiProduct.delete(productId).then((res) => {
+            apiListMain.delete(productId).then((res) => {
               swal({
                 title: "Done!",
                 text: "user is deleted",
@@ -59,7 +85,11 @@ const Products = () => {
                 button: false,
               });
             });
-            reloadData(productId);
+            try {
+              await reloadData(productId);
+            } catch (e) {
+              console.log(e);
+            }
           }
         });
       }
@@ -67,26 +97,26 @@ const Products = () => {
   };
 
   const reloadData = (id) => {
-    setProducts((prev) =>
+    setData((prev) =>
       prev.filter((item) => {
         return item.id != id;
       })
     );
   };
 
+  console.log(data);
   // get all product
   useEffect(() => {
     getProduct();
-  }, []);
-
+  }, [id]);
   return (
     <>
       {load ? (
         <Loading />
       ) : (
-        <ProductDtlComponent
-          products={products}
-          onChange={handleChange}
+        <ShowDetailComponent
+          products={data}
+          openChange={handleOpenChange}
           onDelete={handleDelete}
         />
       )}
@@ -95,10 +125,11 @@ const Products = () => {
           visible={isOpenModal}
           setVisible={setOpenModal}
           data={product}
+          onsubmit={handleChange}
         ></PopupComponent>
       )}
     </>
   );
-};
+}
 
-export default Products;
+export default ListMain;

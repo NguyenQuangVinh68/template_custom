@@ -47,7 +47,6 @@ const AppSidebarNav = ({ items }) => {
   const navGroup = (item, index) => {
     const { component, name, icon, items, to, ...rest } = item;
     const Component = component;
-    console.log(name);
     return (
       <Component
         compact

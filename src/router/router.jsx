@@ -7,6 +7,7 @@ import Products from "../views/Products";
 import Dashboard from "../views/Dashboard";
 import Tables from "../views/Tables";
 import Login from "../views/Pages/Login";
+import ListMain from "../views/ListMain";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { path: "table", element: <Tables /> },
       { path: "product", element: <Products /> },
       { path: "dashboard", element: <Dashboard /> },
+      { path: "listmain/:id", element: <ListMain /> },
     ],
   },
 

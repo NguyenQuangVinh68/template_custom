@@ -1,10 +1,11 @@
 import axiosClient from "./axiosClient";
 
-const apiProduct = {
-  async getAll() {
-    const url = `/products`;
+const apiListMain = {
+  async getAll(pgm_no) {
+    let url = "/products";
+    if (pgm_no == 1) url = "/products";
+    else url = "/carts";
     const res = await axiosClient.get(url);
-    console.log(res);
     return {
       data: res.data,
     };
@@ -33,4 +34,4 @@ const apiProduct = {
   },
 };
 
-export default apiProduct;
+export default apiListMain;
