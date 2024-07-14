@@ -26,9 +26,11 @@ import {
   cilSun,
 } from "@coreui/icons";
 
+import { useStore, action } from "../store";
+
 const AppHeader = () => {
-  // const dispatch = useDispatch()
-  // const sidebarShow = useSelector((state) => state.sidebarShow)
+  const [state, dispatch] = useStore();
+
   const { colorMode, setColorMode } = useColorModes(
     "coreui-free-react-admin-template-theme"
   );
@@ -37,7 +39,7 @@ const AppHeader = () => {
       <CContainer fluid>
         <CHeaderToggler
           className="ps-1"
-          // onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+          onClick={() => dispatch(action.setShowSidebar(!state.showSidebar))}
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>

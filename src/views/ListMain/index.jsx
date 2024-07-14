@@ -4,25 +4,21 @@ import swal from "sweetalert";
 
 import ShowDetailComponent from "../../components/ShowDetailComponent";
 import Loading from "../../components/Loading";
-import apiListMain from "../../api/apiListMain";
 import PopupComponent from "../../components/PopupChangeComponent";
-import { useContext } from "react";
-import { store } from "../../context/ContextProvider";
+
+import { ApiListMain } from "../../api";
 
 function ListMain() {
   const [load, setLoad] = useState(true);
   const [data, setData] = useState([]);
   const [product, setProduct] = useState({});
-  // const { state, dispatch } = useContext(store);
 
   const [isOpenModal, setOpenModal] = useState(false);
 
   const { id } = useParams();
   const getProduct = async () => {
     try {
-      console.log("getdata");
-      const { data } = await apiListMain.getAll(id);
-      // dispatch({ type: "set_data", data: data });
+      const { data } = await ApiListMain.getAll(id);
       setLoad(false);
       setData(data);
     } catch (error) {
@@ -40,7 +36,6 @@ function ListMain() {
   };
   const handleChange = (newData) => {
     let flag = false;
-    console.log(newData);
     const id = newData.id;
     setData(
       data.map((item) => {
@@ -104,8 +99,6 @@ function ListMain() {
     );
   };
 
-  console.log(data);
-  // get all product
   useEffect(() => {
     getProduct();
   }, [id]);

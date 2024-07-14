@@ -18,7 +18,6 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
-import apiAuth from "../../api/apiAuth";
 
 const Login = () => {
   const [list_err, setListError] = useState({
@@ -39,26 +38,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      emp_no: loginInput.emp_no,
-      pass: loginInput.pass,
-    };
-
-    (async () => {
-      try {
-        const res = await apiAuth.login(data);
-        setAuthention(true);
-      } catch (error) {
-        setLogin({
-          emp_no: "",
-          pass: "",
-        });
-        setListError((prev) => ({
-          ...prev,
-          list: error.response.data.errors,
-        }));
-      }
-    })();
   };
 
   return (

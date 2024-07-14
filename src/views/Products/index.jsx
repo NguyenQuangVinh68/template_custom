@@ -3,24 +3,20 @@ import swal from "sweetalert";
 
 import ProductDtlComponent from "../../components/ShowDetailComponent";
 import Loading from "../../components/Loading";
-import apiProduct from "../../api/apiProduct";
+
 import PopupComponent from "../../components/PopupChangeComponent";
-import { useContext } from "react";
-import { store } from "../../context/ContextProvider";
+import { ApiProduct } from "../../api";
 
 const Products = () => {
   const [load, setLoad] = useState(true);
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
-  // const { state, dispatch } = useContext(store);
 
   const [isOpenModal, setOpenModal] = useState(false);
 
   const getProduct = async () => {
     try {
-      console.log("getdata");
-      const { data } = await apiProduct.getAll();
-      // dispatch({ type: "set_data", data: data });
+      const { data } = await ApiProduct.getAll();
       setLoad(false);
       setProducts(data);
     } catch (error) {
@@ -73,7 +69,7 @@ const Products = () => {
       if (willDelete) {
         products.map((item) => {
           if (item.id === productId) {
-            apiProduct.delete(productId).then((res) => {
+            ApiProduct.delete(productId).then((res) => {
               swal({
                 title: "Done!",
                 text: "user is deleted",
