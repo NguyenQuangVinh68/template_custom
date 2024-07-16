@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const apiProduct = {
   async getAll() {
-    const url = `/products`;
+    const url = `/Menu`;
     const res = await axiosClient.get(url);
     console.log(res);
     return {

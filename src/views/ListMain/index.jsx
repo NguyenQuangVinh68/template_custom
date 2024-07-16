@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import swal from "sweetalert";
 
 import ShowDetailComponent from "../../components/ShowDetailComponent";
@@ -7,6 +7,11 @@ import Loading from "../../components/Loading";
 import PopupComponent from "../../components/PopupChangeComponent";
 
 import { ApiListMain } from "../../api";
+import NotFound from "../../components/NotFound";
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 function ListMain() {
   const [load, setLoad] = useState(true);
@@ -15,10 +20,16 @@ function ListMain() {
 
   const [isOpenModal, setOpenModal] = useState(false);
 
-  const { id } = useParams();
+  const query = useQuery();
+  const pgmNo = query.get("PgmNo");
+  console.log;
+  if (!pgmNo) {
+    return <NotFound></NotFound>;
+  }
+
   const getProduct = async () => {
     try {
-      const { data } = await ApiListMain.getAll(id);
+      const { data } = await ApiListMain.getAll(pgmNo);
       setLoad(false);
       setData(data);
     } catch (error) {
@@ -101,7 +112,7 @@ function ListMain() {
 
   useEffect(() => {
     getProduct();
-  }, [id]);
+  }, [pgmNo]);
   return (
     <>
       {load ? (

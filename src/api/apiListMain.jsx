@@ -2,9 +2,7 @@ import axiosClient from "./axiosClient";
 
 const apiListMain = {
   async getAll(pgm_no) {
-    let url = "/products";
-    if (pgm_no == 1) url = "/products";
-    else url = "/carts";
+    let url = `/Listmain/${pgm_no}`;
     const res = await axiosClient.get(url);
     return {
       data: res.data,

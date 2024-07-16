@@ -6,58 +6,64 @@ import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 
 import { CBadge, CNavLink, CSidebarNav } from "@coreui/react";
+import { CNavGroup, CNavItem } from "@coreui/react";
 
 const AppSidebarNav = ({ items }) => {
-  const navLink = (name, icon, badge, indent = false) => {
+  const getComponentFromText = (text) => {
+    if (text === "CNavGroup") return CNavGroup;
+    else return CNavItem;
+  };
+
+  const navLink = (pgm_nm, indent = false) => {
     return (
       <>
-        {icon
-          ? icon
-          : indent && (
-              <span className="nav-icon">
-                <span className="nav-icon-bullet"></span>
-              </span>
-            )}
-        {name && name}
-        {badge && (
-          <CBadge color={badge.color} className="ms-auto">
-            {badge.text}
-          </CBadge>
+        {indent && (
+          <span className="nav-icon">
+            <span className="nav-icon-bullet"></span>
+          </span>
         )}
+        {pgm_nm && pgm_nm}
       </>
     );
   };
 
   const navItem = (item, index, indent = false) => {
-    const { component, name, badge, icon, ...rest } = item;
-    const Component = component;
+    const { pgm_component, pgm_nm, ...rest } = item;
+    const Component = getComponentFromText(pgm_component);
     return (
       <Component as="div" key={index}>
-        {rest.to || rest.href ? (
-          <CNavLink {...(rest.to && { as: NavLink })} {...rest}>
-            {navLink(name, icon, badge, indent)}
+        {rest.pgm_plc ? (
+          <CNavLink
+            {...(rest.pgm_plc && { as: NavLink })}
+            to={rest.pgm_plc.replace("~/tco", "").replace(".aspx", "")}
+            {...rest}
+          >
+            {navLink(pgm_nm, indent)}
           </CNavLink>
         ) : (
-          navLink(name, icon, badge, indent)
+          navLink(pgm_nm, indent)
         )}
       </Component>
     );
   };
 
   const navGroup = (item, index) => {
-    const { component, name, icon, items, to, ...rest } = item;
-    const Component = component;
+    const { pgm_component, pgm_nm, items, ...rest } = item;
+    const Component = getComponentFromText(pgm_component);
     return (
       <Component
         compact
         as="div"
         key={index}
-        toggler={navLink(name, icon)}
+        toggler={navLink(pgm_nm)}
         {...rest}
       >
-        {item.items?.map((item, index) =>
-          item.items ? navGroup(item, index) : navItem(item, index, true)
-        )}
+        {item.items !== null &&
+          item.items?.map((item, index) => {
+            return item.items
+              ? navGroup(item, index)
+              : navItem(item, index, true);
+          })}
       </Component>
     );
   };
@@ -72,8 +78,8 @@ const AppSidebarNav = ({ items }) => {
   );
 };
 
-AppSidebarNav.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
+// AppSidebarNav.propTypes = {
+//   items: PropTypes.arrayOf(PropTypes.any).isRequired,
+// };
 
 export default AppSidebarNav;

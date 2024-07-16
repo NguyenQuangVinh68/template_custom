@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { SET_IS_LOGIN, SET_USER } from "../store/constants";
 
 const cookie = new Cookies();
 
@@ -12,8 +13,8 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   function (config) {
-    // const token = cookie.get("jwt_authentication");
-    // config.headers.Authorization = `Bearer ${token}`;
+    const token = cookie.get("jwt_authentication");
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   function (error) {
@@ -27,11 +28,12 @@ axiosClient.interceptors.response.use(
   },
 
   function (error) {
-    // const { config, data, status } = error.response;
-    // if (status === 400) {
-    //   cookie.remove("jwt_authentication")
-    //   localStorage.removeItem("user");
-    // }
+    const { config, data, status } = error.response;
+    if (status === 401) {
+      console.log("ok");
+      cookie.remove("jwt_authentication");
+      window.dispatchEvent(new Event(SET_USER));
+    }
     return Promise.reject(error);
   }
 );

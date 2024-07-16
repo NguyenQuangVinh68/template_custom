@@ -25,8 +25,8 @@ function ShowDetailComponent({ products, openChange, onDelete }) {
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
-          <CCardBody>
-            <CTable>
+          <CCardBody style={{ overflow: "auto" }}>
+            <CTable className="overflow-scroll">
               <CTableHead>
                 <CTableRow>
                   {products.length > 0 &&

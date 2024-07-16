@@ -24,6 +24,7 @@ import {
   cilMenu,
   cilMoon,
   cilSun,
+  cilExitToApp,
 } from "@coreui/icons";
 
 import { useStore, action } from "../store";
@@ -49,7 +50,9 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
             <CNavLink to="/dashboard" component={NavLink}>
-              Dashboard
+              {state.userInfomation && (
+                <span>welcome {state.userInfomation.emp_nm}</span>
+              )}
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
@@ -115,6 +118,14 @@ const AppHeader = () => {
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
+          {state.isLogin && (
+            <CHeaderToggler
+              className="ps-1"
+              onClick={() => dispatch(action.setIsLogin(false))}
+            >
+              <CIcon icon={cilExitToApp} size="lg" />
+            </CHeaderToggler>
+          )}
         </CHeaderNav>
       </CContainer>
     </CHeader>

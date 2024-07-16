@@ -21,10 +21,6 @@ const _nav = [
     name: "Dashboard",
     to: "/dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon"></CIcon>,
-    badge: {
-      color: "info",
-      text: "NEW",
-    },
   },
   {
     component: CNavTitle,
@@ -50,30 +46,28 @@ const _nav = [
   {
     component: CNavGroup,
     name: "Droplist",
-    to: "/listmain",
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
       {
         component: CNavGroup,
         name: "Chirld Droplist",
-        to: "/listmain",
         items: [
           {
             component: CNavItem,
             name: "item chirld 1",
-            to: "/listmain/1",
+            to: "/listmain?PgmNo=1",
           },
           {
             component: CNavItem,
             name: "item chirld 2",
-            to: "/listmain/4",
+            to: "/listmain?PgmNo=2",
           },
         ],
       },
       {
         component: CNavItem,
         name: "Item 1",
-        to: "/listmain/2",
+        to: "/listmain?PgmNo=1",
       },
     ],
   },
